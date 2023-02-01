@@ -8,70 +8,110 @@ def get_postman(path):
         return result_dict
 
 #Your Postman collection JSON file goes here
-data=get_postman('C:\\Users\\AS\\Desktop\\Demo.postman_collection.json')
+data=get_postman('C:\\Users\\Abhisek\\Desktop\\Sample.postman_collection.json')
+names = ""
 
 c_web_set_user = """
-    web_set_user("my_uname", 
-    "my_pwd", 
+    web_set_user("my_uname",
+    "my_pwd",
     "my_url:my_port");
     """
 
 c_web_header = """
-    web_add_header("my_key", 
+    web_add_header("my_key",
     "my_value");
     """
 
 c_get_request = """
-    web_url("request_name", 
-            "URL=request_url", 
-            "Resource=0", 
-            "RecContentType=application/json", 
-            "Referer=", 
-            "Snapshot=snapshot_number.inf", 
-            "Mode=HTML", 
-            LAST);      
+    web_url("request_name",
+            "URL=request_url",
+            "Resource=0",
+            "RecContentType=application/json",
+            "Referer=",
+            "Snapshot=snapshot_number.inf",
+            "Mode=HTML",
+            LAST);
     """
 
 c_post_request = """
-    web_custom_request("request_name", 
-        "URL=request_url", 
-        "Method=POST", 
-        "Resource=0", 
-        "RecContentType=application/json", 
-        "Referer=", 
-        "Snapshot=snapshot_number.inf", 
-        "Mode=HTML", 
-        "EncType=application/json", 
-        "Body=request_body", 
+    web_custom_request("request_name",
+        "URL=request_url",
+        "Method=POST",
+        "Resource=0",
+        "RecContentType=application/json",
+        "Referer=",
+        "Snapshot=snapshot_number.inf",
+        "Mode=HTML",
+        "EncType=application/json",
+        "Body=request_body",
         LAST);
     """
 
 uname = ""
 pwdvalue = ""
 ictr=0
-print('   web_set_sockets_option("SSL_VERSION", "AUTO");')
-for names in data["item"]:
-    ictr=ictr+1
+
+#Consolidation Dictionary for all items
+dicts = []
+
+
+for x in range(len(data['item'])):
+    #handle the folders
+    try:
+        # px = data['item'][x]['item'];
+        #loop for multiple requests ina given folder
+
+        for i in range(len(data['item'][x]['item'])):
+            names = (data['item'][x]['item'][i]);
+            #Append to the final dictionary
+            dicts.append(names)
+
+    except KeyError:
+        px = (data['item'][x]);
+        names = px
+        # Append to the final dictionary
+        dicts.append(names)
+
+#print(dicts)
+#traverse the final dictionary to create the result file
+for names in dicts:
+    ictr = ictr + 1
     my_web_header = ""
 
     my_web_set_user = c_web_set_user
     my_get_request = c_get_request
     my_post_request = c_post_request
 
-    # Authentication part processing module
+#        print(px["method"])
+   # Authentication part processing module
     if "auth" in names["request"]:
+
         parsed = urlparse(names["request"]["url"]["raw"])
 
-        for values in (names["request"]["auth"]["basic"]):
-            if values["key"] == "password":
-                pwdvalue = values["value"]
-            elif values["key"] == "username":
-                uname = values["value"]
-        my_web_set_user= my_web_set_user.replace("my_uname",uname)
-        my_web_set_user= my_web_set_user.replace("my_pwd",pwdvalue)
-        my_web_set_user = my_web_set_user.replace("my_url", parsed.netloc)
-        my_web_set_user = my_web_set_user.replace("my_port", "443" if names["request"]["url"]["protocol"] == "https" else "80")
-        print(my_web_set_user)
+        if(names["request"]["auth"]["type"] == "basic"):
+            for values in (names["request"]["auth"]["basic"]):
+                if values["key"] == "password":
+                    pwdvalue = values["value"]
+                elif values["key"] == "username":
+                    uname = values["value"]
+            my_web_set_user = my_web_set_user.replace("my_uname", uname)
+            my_web_set_user = my_web_set_user.replace("my_pwd", pwdvalue)
+            my_web_set_user = my_web_set_user.replace("my_url", parsed.netloc)
+            my_web_set_user = my_web_set_user.replace("my_port",
+                                                      "443" if names["request"]["url"]["protocol"] == "https" else "80")
+            print(my_web_set_user)
+
+        if (names["request"]["auth"]["type"] == "bearer"):
+            my_web_header = c_web_header
+            my_web_header = my_web_header.replace("my_key", "Authorization")
+            my_web_header = my_web_header.replace("my_value", "Bearer " + names["request"]["auth"]["bearer"][0]["value"])
+            print(my_web_header)
+
+        if (names["request"]["auth"]["type"] == "apikey"):
+            my_web_header = c_web_header
+            my_web_header = my_web_header.replace("my_key", names["request"]["auth"]["apikey"][1]["value"])
+            my_web_header = my_web_header.replace("my_value",  names["request"]["auth"]["apikey"][0]["value"])
+            print(my_web_header)
 
     # Header Part processing module
     if "header" in names["request"]:
@@ -85,7 +125,7 @@ for names in data["item"]:
     #
     if names["request"]["method"] == "GET":
         my_final_string = my_get_request
-        my_final_string = my_final_string.replace("request_name", names["name"] )
+        my_final_string = my_final_string.replace("request_name", names["name"])
         my_final_string = my_final_string.replace("request_url", names["request"]["url"]["raw"])
         my_final_string = my_final_string.replace("snapshot_number", "t" + str(ictr))
 
@@ -94,7 +134,7 @@ for names in data["item"]:
         print("   lr_end_transaction(\"" + names["name"] + "\",LR_AUTO);" + "\n")
     # #
     # # # POST BODY REQUEST Handling
-    if names["request"]["method"]=="POST":
+    if names["request"]["method"] == "POST":
         my_final_string = my_post_request
         my_body_string = (names["request"]["body"]['raw'])
         my_body_string = my_body_string.replace("\r\n", "")
