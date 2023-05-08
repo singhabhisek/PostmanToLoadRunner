@@ -1,0 +1,330 @@
+{
+	"info": {
+		"_postman_id": "b1c2ce49-e9b1-4a6f-b495-ce18b110fdd2",
+		"name": "Sample",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "A",
+			"item": [
+				{
+					"name": "A_Request-BasicAuthHeader",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "testpassword",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "testuser",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "myHeaderKey",
+								"value": "myHeaderValue",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "https://dummyjson.com/products/1",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "E_Request-BearerToken",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "SampleBearerTokenAdded",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"testuser@test.com\",\r\n    \"password\": \"passwords\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://dummyresponse.in/api/register",
+							"protocol": "https",
+							"host": [
+								"dummyresponse",
+								"in"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "E_Request-BearerTokenHeader",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "SampleBearerTokenAddedSecondRequest",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Header123",
+								"value": "Value345",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://reqres.in/api/register",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "B",
+			"item": [
+				{
+					"name": "B_Request - BasicAuth",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "secondpassword",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "seconduser",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts/2",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "B_Request - NoAuth",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "TestHeaders",
+								"value": "testValues",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "https://dummyjson.com/products/122",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"products",
+								"122"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "B_Request - NoAuthHeader",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://dummyjson.com/products/122",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"products",
+								"122"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "C_Request-BasicAuthHeader",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "thirdpassword",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "thirduser",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "myHeader",
+						"value": "MyHeadValues",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://jsonplaceholder.typicode.com/comments?postId=999&auth=pz992aa",
+					"protocol": "http",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "999"
+						},
+						{
+							"key": "auth",
+							"value": "pz992aa"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "D_Request",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "TestPassAPI",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "TestUserAPI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userid\": \"eve.holt@pmyq.in\",\r\n    \"password\": \"helloworld\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqresults.in/api/registeruser",
+					"protocol": "https",
+					"host": [
+						"reqresults",
+						"in"
+					],
+					"path": [
+						"api",
+						"registeruser"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
